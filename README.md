@@ -91,8 +91,9 @@ docker-compose logs -f
 
 ### Production (Published Image)
 
+**Option 1: Embedded Configuration (Recommended)**
 ```bash
-# Use production compose file
+# Uses embedded config in docker-compose file
 docker-compose -f docker-compose.prod.yml up -d
 
 # Pull latest image and restart
@@ -101,6 +102,15 @@ docker-compose -f docker-compose.prod.yml up -d
 
 # View logs
 docker-compose -f docker-compose.prod.yml logs -f
+```
+
+**Option 2: External Configuration File**
+```bash
+# Uses external config file (requires config/config.yaml)
+docker-compose -f docker-compose.prod-external.yml up -d
+
+# View logs
+docker-compose -f docker-compose.prod-external.yml logs -f
 ```
 
 ### One-Time Execution

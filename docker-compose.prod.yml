@@ -1,12 +1,29 @@
 version: '3.8'
 
+configs:
+  zurg_repair_config:
+    content: |
+      instances:
+        production:
+          baseUrl: "http://zurg:9999/"
+          concurrencyLimit: 10
+          cronSchedule: "0 */6 * * *"  # Every 6 hours
+          enabled: true
+          retryAttempts: 3
+          retryDelay: 2000
+
+      globalSettings:
+        logLevel: "info"
+        timezone: "UTC"
+
 services:
   zurg-repair:
     image: ghcr.io/maulik9898/zurg-repair:latest
     container_name: zurg-repair-prod
     restart: unless-stopped
-    volumes:
-      - ./config/config.yaml:/config/config.yaml:ro
+    configs:
+      - source: zurg_repair_config
+        target: /config/config.yaml
     environment:
       - NODE_ENV=production
       - SCHEDULER_MODE=true
@@ -14,8 +31,14 @@ services:
       - TZ=UTC
       - ZURG_CONFIG_FILE=/config/config.yaml
     healthcheck:
-      test: [ "CMD", "bun", "--version" ]
+      test: ["CMD", "bun", "--version"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    networks:
+      - zurg-network
+
+networks:
+  zurg-network:
+    driver: bridge
