@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  zurg-repair:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: zurg-repair:dev
+    container_name: zurg-repair-dev
+    restart: unless-stopped
+    volumes:
+      - ./config/config.yaml:/config/config.yaml:ro
+    environment:
+      - NODE_ENV=development
+      - SCHEDULER_MODE=true
+      - LOG_LEVEL=debug
+      - TZ=UTC
+    networks:
+      - zurg-network
+
+networks:
+  zurg-network:
+    driver: bridge

@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  zurg-repair:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: zurg-repair:dev
+    container_name: zurg-repair-dev
+    restart: unless-stopped
+    volumes:
+      - ./config/config.yaml:/config/config.yaml:ro
+      # Mount source code for development
+      - ./src:/usr/src/app/src:ro
+    environment:
+      - NODE_ENV=development
+      - SCHEDULER_MODE=true
+      - LOG_LEVEL=debug
+      - TZ=UTC
+      - ZURG_CONFIG_FILE=/config/config.yaml

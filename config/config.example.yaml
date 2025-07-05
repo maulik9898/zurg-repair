@@ -1,0 +1,20 @@
+instances:
+  plex:
+    baseUrl: "http://192.168.1.100:9999/"
+    concurrencyLimit: 10
+    cronSchedule: "0 */6 * * *"  # Every 6 hours
+    enabled: true
+    retryAttempts: 3
+    retryDelay: 2000
+
+  backup:
+    baseUrl: "http://192.168.1.101:9999/"
+    concurrencyLimit: 5
+    cronSchedule: "0 2 * * *"   # Daily at 2:00 AM
+    enabled: true
+    retryAttempts: 2
+    retryDelay: 1500
+
+globalSettings:
+  logLevel: "info"
+  timezone: "UTC"
