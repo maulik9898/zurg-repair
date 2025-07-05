@@ -36,6 +36,10 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Get package version
+      id: package-version
+      run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
     - name: Extract metadata
       id: meta
       uses: docker/metadata-action@v5
@@ -46,6 +50,7 @@ jobs:
           type=ref,event=pr,prefix=pr-
           type=sha
           type=raw,value=latest,enable={{is_default_branch}}
+          type=raw,value=v${{ steps.package-version.outputs.version }},enable={{is_default_branch}}
         labels: |
           org.opencontainers.image.description=Zurg file repair system
           org.opencontainers.image.source=https://github.com/${{ github.repository }}
